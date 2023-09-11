@@ -1,178 +1,227 @@
 import Enums.COLORES;
 import Enums.MARCA;
+import Enums.MOTOMARCA;
+import Exceptions.DatosInvalidosException;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class Main {
 
-
     public static void main(String[] args) {
-        ArrayList <Automoviles> listaDeAutos = new ArrayList<Automoviles>();
-        ArrayList <Motocicletas> listaDeMotos = new ArrayList<Motocicletas>();
-        Boolean bandera = false;
-        System.out.println("¿Desea cargar Vehiculos? -- Ingrese 1 si lo desea o 2 si no lo desea --");
+        ArrayList<Automoviles> listaDeAutos = new ArrayList<Automoviles>();
+        ArrayList<Motocicletas> listaDeMotos = new ArrayList<Motocicletas>();
+        boolean bandera = false;
+
+        System.out.println("--------------------------------------------------");
+        System.out.println("¿Desea cargar Vehiculos? Ingrese 1 para sí, 2 para no");
+        System.out.println("--------------------------------------------------");
+
         Scanner inputDecision = new Scanner(System.in);
-        int decision;
-        decision = inputDecision.nextInt();
-        if(decision == 1){
+        int decision = inputDecision.nextInt();
+
+        if (decision == 1) {
             bandera = true;
         } else if (decision == 2) {
-            System.out.println("Eligio no cargar ninguno vehiculo");
+            System.out.println("Eligió no cargar ningún vehículo");
             bandera = false;
-        } else{
-            System.out.println("Digito un numero incorrecto");
+        } else {
+            System.out.println("Ha ingresado un número incorrecto");
             bandera = false;
         }
-        while(bandera == true){
-            System.out.println("¿Desea ingresar Automovil o Motocicleta? -- Digite 1 por automovil o 2 por motocicleta --");
+
+        while (bandera) {
+            System.out.println("--------------------------------------------------");
+            System.out.println("¿Desea ingresar Automóvil o Motocicleta? Ingrese 1 para Automóvil, 2 para Motocicleta");
+            System.out.println("--------------------------------------------------");
+
             Scanner inputEleccion = new Scanner(System.in);
             int eleccion = inputEleccion.nextInt();
-            if(eleccion == 1){
+
+            if (eleccion == 1) {
                 Automoviles automovil = new Automoviles();
-                System.out.println("Ingrese el anio del Automovil");
-                Scanner inputAnio = new Scanner(System.in);
-                int anio = inputAnio.nextInt();
-                automovil.setAnio(anio);
-                System.out.println("Ingrese el km del Automovil");
-                Scanner inputKm = new Scanner(System.in);
-                int km = inputKm.nextInt();
-                automovil.setKm(km);
-                System.out.println("Ingrese la marca del Automovil");
-                System.out.println("1: TOYOTA -- 2: FORD -- 3: CHEVROLET");
-                Scanner inputMarca = new Scanner(System.in);
-                int marca = inputMarca.nextInt();
+                try{
+                    System.out.println("Ingrese el año del Automóvil:");
+                    int anio = inputDecision.nextInt();
+                    if(anio<1990){
+                        throw new DatosInvalidosException("Dato invalido");
+                    }else{
+                        automovil.setAnio(anio);
+                    }
+                    System.out.println("Ingrese los kilómetros del Automóvil:");
+                    int km = inputDecision.nextInt();
+                    if(km < 0){
+                        throw new DatosInvalidosException("Dato invalido");
+                    }else{
+                        automovil.setKm(km);
+                    }
+
+                }catch (DatosInvalidosException e){
+                    System.out.println("Error: " + e.getMessage());
+                }
+
+                System.out.println("¿El motor está en buen estado? Ingrese false para sí, true para no:");
+                boolean motor = !inputDecision.nextBoolean();
+                automovil.setMotor(motor);
+
+                System.out.println("Ingrese la marca del Automóvil:");
+                System.out.println("1: TOYOTA, 2: FORD, 3: CHEVROLET");
+                int marca = inputDecision.nextInt();
+
                 switch (marca) {
                     case 1:
-                        System.out.println("Seleccionó TOYOTA.");
                         automovil.setMarca(MARCA.TOYOTA);
                         break;
                     case 2:
-                        System.out.println("Seleccionó FORD.");
                         automovil.setMarca(MARCA.FORD);
                         break;
                     case 3:
-                        System.out.println("Seleccionó CHEVROLET.");
                         automovil.setMarca(MARCA.CHEVROLET);
                         break;
                     default:
                         System.out.println("Marca no válida.");
                         break;
                 }
-                System.out.println("Ingrese el color deseado");
-                System.out.println("1:AZUL -- 2:NEGRO -- 3:BLANCO -- 4:ROJO");
-                Scanner inputColor = new Scanner(System.in);
-                int color = inputColor.nextInt();
+
+                System.out.println("Ingrese el color deseado:");
+                System.out.println("1: AZUL, 2: NEGRO, 3: BLANCO, 4: ROJO");
+                int color = inputDecision.nextInt();
+
                 switch (color) {
                     case 1:
-                        System.out.println("Seleccionó AZUL");
                         automovil.setColor(COLORES.AZUL);
                         break;
                     case 2:
-                        System.out.println("Seleccionó NEGRO.");
                         automovil.setColor(COLORES.NEGRO);
                         break;
                     case 3:
-                        System.out.println("Seleccionó BLANCO.");
                         automovil.setColor(COLORES.BLANCO);
                         break;
                     case 4:
-                        System.out.println("Seleccionó ROJO");
                         automovil.setColor(COLORES.ROJO);
+                        break;
                     default:
-                        System.out.println("Color no valido.");
+                        System.out.println("Color no válido.");
                         break;
                 }
-                System.out.println("Se cargo correctamente el automovil");
+
                 listaDeAutos.add(automovil);
-                System.out.println("Los datos ingresados fueron: ");
+
+                System.out.println("Se ha cargado correctamente el automóvil.");
+                System.out.println("Los datos ingresados son:");
                 System.out.println("Marca: " + automovil.getMarca());
-                System.out.println("Anio: " + automovil.getAnio());
+                System.out.println("Año: " + automovil.getAnio());
                 System.out.println("Color: " + automovil.getColor());
-                System.out.println("KM: " + automovil.getKm());
-                System.out.println("¿Desea seguir cargando vehiculos? -- Ingrese 1 si lo desea o 2 si no lo desea --");
+                System.out.println("Kilómetros: " + automovil.getKm());
+                System.out.println("¿Desea seguir cargando vehículos? Ingrese 1 para sí, 2 para no");
                 decision = inputDecision.nextInt();
-                if(decision == 1){
-                    bandera = true;
-                }else{
+
+                if (decision != 1) {
                     bandera = false;
-                    System.out.println("Salio del programa exitosamente");
+                    System.out.println("Ha salido del programa exitosamente.");
+                }
+            } else {
+                Motocicletas motocicleta = new Motocicletas();
+
+                System.out.println("Ingrese el año de la motocicleta:");
+                int anio = inputDecision.nextInt();
+                motocicleta.setAnio(anio);
+
+                System.out.println("Ingrese los kilómetros de la motocicleta:");
+                int km = inputDecision.nextInt();
+                motocicleta.setKm(km);
+
+                System.out.println("Ingrese los cc de la motocicleta:");
+                int cc = inputDecision.nextInt();
+                motocicleta.setCc(cc);
+
+                System.out.println("¿El motor está en buen estado? Ingrese false para sí, true para no:");
+                boolean motor = !inputDecision.nextBoolean();
+                motocicleta.setMotor(motor);
+
+                System.out.println("Ingrese la marca de la Motocicleta:");
+                System.out.println("1: BMW, 2: YAMAHA, 3: MOTOMEL, 4: ZANELLA");
+                int marca = inputDecision.nextInt();
+
+                switch (marca) {
+                    case 1:
+                        motocicleta.setMarca(MOTOMARCA.BMW);
+                        break;
+                    case 2:
+                        motocicleta.setMarca(MOTOMARCA.YAMAHA);
+                        break;
+                    case 3:
+                        motocicleta.setMarca(MOTOMARCA.MOTOMEL);
+                        break;
+                    case 4:
+                        motocicleta.setMarca(MOTOMARCA.ZANELLA);
+                        break;
+                    default:
+                        System.out.println("Marca no válida.");
+                        break;
                 }
 
-            }else{
-                Motocicletas motocicleta = new Motocicletas();
-                System.out.println("Ingrese el anio de la motocicleta");
-                Scanner inputAnio = new Scanner(System.in);
-                int anio = inputAnio.nextInt();
-                motocicleta.setAnio(anio);
-                System.out.println("Ingrese el km de la motocicleta");
-                Scanner inputKm = new Scanner(System.in);
-                int km = inputKm.nextInt();
-                motocicleta.setKm(km);
-                System.out.println("Ingrese los cc de la motocicleta");
-                Scanner inputCc = new Scanner(System.in);
-                int cc = inputCc.nextInt();
-                motocicleta.setCc(cc);
-                System.out.println("Ingrese el color deseado");
-                System.out.println("1:AZUL -- 2:NEGRO -- 3:BLANCO -- 4:ROJO");
-                Scanner inputColor = new Scanner(System.in);
-                int color = inputColor.nextInt();
+                System.out.println("Ingrese el color deseado:");
+                System.out.println("1: AZUL, 2: NEGRO, 3: BLANCO, 4: ROJO");
+                int color = inputDecision.nextInt();
+
                 switch (color) {
                     case 1:
-                        System.out.println("Seleccionó AZUL");
                         motocicleta.setColor(COLORES.AZUL);
                         break;
                     case 2:
-                        System.out.println("Seleccionó NEGRO.");
                         motocicleta.setColor(COLORES.NEGRO);
                         break;
                     case 3:
-                        System.out.println("Seleccionó BLANCO.");
                         motocicleta.setColor(COLORES.BLANCO);
                         break;
                     case 4:
-                        System.out.println("Seleccionó ROJO");
                         motocicleta.setColor(COLORES.ROJO);
+                        break;
                     default:
-                        System.out.println("Color no valido.");
+                        System.out.println("Color no válido.");
                         break;
                 }
-                System.out.println("Se cargo correctamente la motocicleta");
+
                 listaDeMotos.add(motocicleta);
-                System.out.println("Los datos ingresados fueron: ");
-                System.out.println("Marca: " + motocicleta.getCc());
-                System.out.println("Anio: " + motocicleta.getAnio());
+
+                System.out.println("Se ha cargado correctamente la motocicleta.");
+                System.out.println("Los datos ingresados son:");
+                System.out.println("Marca: " + motocicleta.getMarca());
+                System.out.println("Cc: " + motocicleta.getCc());
+                System.out.println("Estado del motor: " + motocicleta.getMotor());
+                System.out.println("Año: " + motocicleta.getAnio());
                 System.out.println("Color: " + motocicleta.getColor());
-                System.out.println("KM: " + motocicleta.getKm());
-                System.out.println("¿Desea seguir cargando vehiculos? -- Ingrese 1 si lo desea o 2 si no lo desea --");
+                System.out.println("Kilómetros: " + motocicleta.getKm());
+                System.out.println("¿Desea seguir cargando vehículos? Ingrese 1 para sí, 2 para no");
                 decision = inputDecision.nextInt();
-                if(decision == 1){
-                    bandera = true;
-                }else{
+
+                if (decision != 1) {
                     bandera = false;
-                    System.out.println("Salio del programa exitosamente");
+                    System.out.println("Ha salido del programa exitosamente.");
                 }
             }
-
         }
+
         System.out.println("Lista de automóviles cargados:");
         for (Automoviles automovil : listaDeAutos) {
+            System.out.println("--------------------");
             System.out.println("Marca: " + automovil.getMarca());
+            System.out.println("Estado del motor: " + (automovil.getMotor() ? "Necesita mantenimiento" : "En buen estado"));
             System.out.println("Año: " + automovil.getAnio());
             System.out.println("Color: " + automovil.getColor());
-            System.out.println("KM: " + automovil.getKm());
-            System.out.println("--------------------");
+            System.out.println("Kilómetros: " + automovil.getKm());
         }
+
         System.out.println("Lista de motocicletas cargadas:");
         for (Motocicletas motocicletas : listaDeMotos) {
+            System.out.println("--------------------");
+            System.out.println("Marca: " + motocicletas.getMarca());
             System.out.println("Cc: " + motocicletas.getCc());
+            System.out.println("Estado del motor: " + (motocicletas.getMotor() ? "Necesita mantenimiento" : "En buen estado"));
             System.out.println("Año: " + motocicletas.getAnio());
             System.out.println("Color: " + motocicletas.getColor());
-            System.out.println("KM: " + motocicletas.getKm());
-            System.out.println("--------------------");
-        }
+            System.out.println("Kilómetros: " + motocicletas.getKm());
         }
     }
-
+}

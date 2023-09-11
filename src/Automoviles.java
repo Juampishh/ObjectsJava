@@ -2,22 +2,24 @@ import Enums.COLORES;
 import Enums.MARCA;
 
 import java.io.Serializable;
-import java.util.Scanner;
 
 public class Automoviles extends Vehiculos implements Serializable, Mantenimiento {
     private MARCA marca;
     private COLORES color;
+    private Boolean motor;
 
     public Automoviles(){};
-    public Automoviles(MARCA marca, COLORES color) {
+    public Automoviles(MARCA marca, COLORES color,Boolean motor) {
         this.marca = marca;
         this.color = color;
+        this.motor = motor;
     }
 
-    public Automoviles(int anio, int km, MARCA marca, COLORES color) {
+    public Automoviles(int anio, int km, MARCA marca, COLORES color, Boolean motor) {
         super(anio, km);
         this.marca = marca;
         this.color = color;
+        this.motor = motor;
     }
 
     public MARCA getMarca() {
@@ -36,12 +38,24 @@ public class Automoviles extends Vehiculos implements Serializable, Mantenimient
         this.color = color;
     }
 
+    public Boolean getMotor() {
+        return motor;
+    }
+
+    public void setMotor(Boolean motor) {
+        this.motor = motor;
+    }
+
     @Override
     public String NecesitaMantenimiento() {
-       if(getKm() == 0){
-           return "No necesita mantenimiento el auto es 0km";
-       }else{
-           return "Necesita mantenimiento";
-       }
+        if(getMotor() == false){
+            if (getKm() == 0){
+                return "El auto es 0km el mantenimiento esta hecho";
+            }
+            return "El moto se encuentra en buen estado y no necesita mantenimiento";
+        }else {
+            return "El motor necesita mantenimiento";
+        }
     }
+
 }
