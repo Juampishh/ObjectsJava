@@ -122,18 +122,31 @@ public class Main {
                 }
             } else {
                 Motocicletas motocicleta = new Motocicletas();
+                try{
+                    System.out.println("Ingrese el año de la motocicltea:");
+                    int anio = inputDecision.nextInt();
+                    if(anio<1990){
+                        throw new DatosInvalidosException("Dato invalido");
+                    }else{
+                        motocicleta.setAnio(anio);
+                    }
+                    System.out.println("Ingrese los kilómetros de la motocicleta:");
+                    int km = inputDecision.nextInt();
+                    if(km < 0){
+                        throw new DatosInvalidosException("Dato invalido");
+                    }else{
+                        motocicleta.setKm(km);
+                    }
 
-                System.out.println("Ingrese el año de la motocicleta:");
-                int anio = inputDecision.nextInt();
-                motocicleta.setAnio(anio);
+                    System.out.println("Ingrese los cc de la motocicleta:");
+                    int cc = inputDecision.nextInt();
+                    motocicleta.setCc(cc);
 
-                System.out.println("Ingrese los kilómetros de la motocicleta:");
-                int km = inputDecision.nextInt();
-                motocicleta.setKm(km);
+                }catch (DatosInvalidosException e){
+                    System.out.println("Error: " + e.getMessage());
+                }
 
-                System.out.println("Ingrese los cc de la motocicleta:");
-                int cc = inputDecision.nextInt();
-                motocicleta.setCc(cc);
+
 
                 System.out.println("¿El motor está en buen estado? Ingrese false para sí, true para no:");
                 boolean motor = !inputDecision.nextBoolean();
