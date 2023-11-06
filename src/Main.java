@@ -3,6 +3,7 @@ import Enums.MARCA;
 import Enums.MOTOMARCA;
 import Exceptions.DatosInvalidosException;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -236,5 +237,98 @@ public class Main {
             System.out.println("Color: " + motocicletas.getColor());
             System.out.println("Kilómetros: " + motocicletas.getKm());
         }
+
+        //AUTOS
+        try{
+
+            FileOutputStream fileOut = new FileOutputStream("ColeccionDeAutos.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            for(Automoviles auto : listaDeAutos){
+                out.writeObject(auto);
+            }
+            out.close();
+            fileOut.close();
+            System.out.println("Los automoviles fueron guardados Correctamente");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        };
+
+        try {
+            FileInputStream fileIn = new FileInputStream("ColeccionDeAutos.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+
+            while (true) {
+
+
+                try {
+                    Automoviles auto = (Automoviles) in.readObject();
+                    System.out.println("-------------------------------");
+
+                    System.out.println("---Los datos del automovil son---");
+                    System.out.println("Marca: " + auto.getMarca());
+                    System.out.println("Km: " + auto.getKm());
+                    System.out.println("Estado del motor: " + auto.getMotor());
+                    System.out.println("Color: " + auto.getColor());
+                    System.out.println("Año: " + auto.getAnio());
+                } catch (EOFException eof) {
+                    break; // Se alcanzó el final del archivo
+                }
+            }
+
+            in.close();
+            fileIn.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        //MOTOS
+        try{
+
+            FileOutputStream fileOut = new FileOutputStream("ColeccionDeMotos.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            for(Motocicletas moto : listaDeMotos){
+                out.writeObject(moto);
+            }
+            out.close();
+            fileOut.close();
+            System.out.println("Las motocicletas fueron cargadas correctamente");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        };
+
+        try {
+            FileInputStream fileIn = new FileInputStream("ColeccionDeMotos.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+
+            while (true) {
+
+
+                try {
+                    Motocicletas moto = (Motocicletas) in.readObject();
+                    System.out.println("-------------------------------");
+
+                    System.out.println("---Los datos de la motocicleta son---");
+                    System.out.println("Marca: " + moto.getMarca());
+                    System.out.println("Km: " + moto.getKm());
+                    System.out.println("Estado del motor: " + moto.getMotor());
+                    System.out.println("Color: " + moto.getColor());
+                    System.out.println("Año: " + moto.getAnio());
+                } catch (EOFException eof) {
+                    break; // Se alcanzó el final del archivo
+                }
+            }
+
+            in.close();
+            fileIn.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
